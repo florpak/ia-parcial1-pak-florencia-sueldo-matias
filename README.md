@@ -1,1 +1,2 @@
-# ia-parcial1-pak-florencia-sueldo-matias
+#Parcial 1 - Inteligencia Artificial I
+Alumnos: Pak Florencia, Sueldo Matías
