@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 182370831154458781}
   m_Layer: 0
   m_Name: Sparrow - Boid
-  m_TagString: Untagged
+  m_TagString: Boid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,7 +132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bab5ae434d44e49bdf93911fb2cdc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Velocity: {x: 0, y: 0, z: 0}
+  speed: 0
+  target: {fileID: 0}
 --- !u!1 &7051773660671855733
 GameObject:
   m_ObjectHideFlags: 0
