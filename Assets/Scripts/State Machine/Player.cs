@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : Agent
 {
     private FiniteStateMachine fsm;
-    [SerializeField] protected float size = 1f;
+    //[SerializeField] protected float size = 1f;
     List<Agent> boidsList;
     [SerializeField]
     protected Agent targetAgent;
@@ -13,7 +13,7 @@ public class Player : Agent
     protected float stamina;
     [SerializeField]
     protected List<GameObject> wayPoints;
-
+    [SerializeField] protected int waypointNumber = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -88,5 +88,14 @@ public class Player : Agent
     public List<GameObject> GetWayPoints()
     {
         return this.wayPoints;
+    }
+    public int GetWayPointNumber()
+    {
+        return this.waypointNumber;
+    }
+
+    public void SetWayPointNumber(int number)
+    {
+        this.waypointNumber= number;
     }
 }

@@ -16,14 +16,21 @@ public class PatrolState : State
 
     public override void OnUpdate()
     {
-        foreach (GameObject waypoint in player.GetWayPoints())
+        if (Vector3.Distance(player.GetWayPoints()[player.GetWayPointNumber()].transform.position, player.transform.position)>0.1f)
         {
-            while (Vector3.Distance(player.transform.position, waypoint.transform.position) > 0.1f)
+            AddForce(Seek(player.GetWayPoints()[player.GetWayPointNumber()].transform.position, player.GetMaxSpeed()));
+            player.Move();
+        }
+        else 
+        {
+            if (player.GetWayPoints().Count-1 > player.GetWayPointNumber())
             {
-                AddForce(Arrive(waypoint));
-                player.Move();
+                player.SetWayPointNumber(player.GetWayPointNumber() +1);
+            }
+            else
+            {
+                player.SetWayPointNumber(0);
             }
         }
-        
     }
 }
