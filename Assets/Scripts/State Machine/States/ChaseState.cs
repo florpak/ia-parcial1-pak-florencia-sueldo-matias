@@ -14,19 +14,26 @@ public class ChaseState : State
 
     public override void OnUpdate()
     {
-        player.SubstractStamina(1 * Time.deltaTime);
-        if (player.GetStamina() <= 0)
+        if (!player.HasToUseObstacleAvoidance())
         {
-            fsm.ChangeState(PlayerState.Idle);
-        }
-        if(player.GetTargetAgent() != null)
-        {
-            AddForce(player.Pursuit(player.GetTargetAgent())*3);
-            player.Move();
+            player.SubstractStamina(1 * Time.deltaTime);
+            if (player.GetStamina() <= 0)
+            {
+                fsm.ChangeState(PlayerState.Idle);
+            }
+            if (player.GetTargetAgent() != null)
+            {
+                AddForce(player.Pursuit(player.GetTargetAgent()) * 3);
+                player.Move();
+            }
+            else
+            {
+                fsm.ChangeState(PlayerState.Patrol);
+            }
         }
         else
         {
-            fsm.ChangeState(PlayerState.Patrol);
+            player.Move();
         }
 
     }

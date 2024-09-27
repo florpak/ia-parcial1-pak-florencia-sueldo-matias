@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.PackageManager;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class Player : Agent
 {
@@ -18,11 +20,14 @@ public class Player : Agent
     [SerializeField]
     protected List<GameObject> wayPoints;
     [SerializeField] protected int waypointNumber = 0;
+
+    [SerializeField] protected Slider slider;
     // Start is called before the first frame update
     void Start()
     {
-        
-         size = 1f;
+        slider = GetComponentInChildren<Slider>();
+        slider.value = this.stamina;
+        size = 0.5f;
         //GameManager.Instance.enemyAgent.Add(this);
         fsm = new FiniteStateMachine(this);
         fsm.AddState(PlayerState.Idle, new IdleState());
@@ -112,12 +117,16 @@ public class Player : Agent
     }
     public float AddStamina(float amount)
     {
-        return this.stamina += amount;
+        this.stamina += amount;
+        slider.value = this.stamina;
+        return this.stamina;
     }
     public float SubstractStamina(float amount)
     {
-        return this.stamina -= amount;
-    }
+            this.stamina -= amount*3;
+            slider.value = this.stamina;
+            return this.stamina;
+     }
     public List<GameObject> GetWayPoints()
     {
         return this.wayPoints;

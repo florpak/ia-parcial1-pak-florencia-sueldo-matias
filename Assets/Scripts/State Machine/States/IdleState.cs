@@ -17,7 +17,7 @@ public class IdleState : State
     public override void OnUpdate()
     {
 
-        player.AddStamina( 1 * Time.deltaTime);
+        player.AddStamina( 20 * Time.deltaTime);
         if(player.GetStamina() > 100) 
         { 
             fsm.ChangeState(PlayerState.Patrol);
