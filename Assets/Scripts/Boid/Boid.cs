@@ -22,11 +22,16 @@ public class Boid : Agent
     {
         if (!HasToUseObstacleAvoidance())
         {
-            AddForce(Flee(GameManager.Instance.enemyAgent) * fleeSpeed);
-            //AddForce(Arrive(GameManager.Instance.food) * fleeSpeed);
+            AddForce(Flee(GameManager.Instance.playerAgent) * fleeSpeed);
+            foreach (FoodScript item in GameManager.Instance.food)
+            {
+                if (Vector3.Distance(transform.position, item.transform.position) > viewRadius) continue;
+                AddForce(Arrive(GameManager.Instance.food) * 7);
+            }
+            
             AddForce(Alignment(GameManager.Instance.agents));
             AddForce(Cohesion(GameManager.Instance.agents));
-            AddForce(Separation(GameManager.Instance.agents) * 2);
+            AddForce(Separation(GameManager.Instance.agents) * 3);
         }
         Move();
     }

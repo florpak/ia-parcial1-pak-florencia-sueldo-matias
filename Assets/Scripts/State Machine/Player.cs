@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Player : Agent
 {
     private FiniteStateMachine fsm;
     //[SerializeField] protected float size = 1f;
     List<Agent> boidsList;
+    List<Agent> boidsInRange;
     [SerializeField]
     protected Agent targetAgent;
     [SerializeField]
@@ -17,19 +21,44 @@ public class Player : Agent
     // Start is called before the first frame update
     void Start()
     {
+        
          size = 1f;
         //GameManager.Instance.enemyAgent.Add(this);
         fsm = new FiniteStateMachine(this);
         fsm.AddState(PlayerState.Idle, new IdleState());
         fsm.AddState(PlayerState.Patrol, new PatrolState());
-        fsm.ChangeState(PlayerState.Idle,transform.position);
+        fsm.AddState(PlayerState.Chase, new ChaseState());
+        fsm.ChangeState(PlayerState.Idle);
         boidsList = GameManager.Instance.agents;
+        GameManager.Instance.playerAgent.Add(this);
     }
 
     // Update is called once per frame
     void Update()
     {
+        GetTarget();
         fsm.Update();
+
+    }
+
+    private void GetTarget()
+    {
+        boidsInRange = new List<Agent>();
+
+        foreach (Agent item in boidsList)
+        {
+            if (Vector3.Distance(transform.position, item.transform.position) > viewRadius) continue;
+            boidsInRange.Add(item);
+        }
+        if (boidsInRange.Count ==0)
+        {
+            targetAgent = null;
+        }
+        else
+        {
+            targetAgent = boidsList.OrderBy(X => Vector3.Distance(X.transform.position, transform.position)).FirstOrDefault();
+        }
+
 
     }
 
@@ -85,6 +114,10 @@ public class Player : Agent
     {
         return this.stamina += amount;
     }
+    public float SubstractStamina(float amount)
+    {
+        return this.stamina -= amount;
+    }
     public List<GameObject> GetWayPoints()
     {
         return this.wayPoints;
@@ -98,4 +131,9 @@ public class Player : Agent
     {
         this.waypointNumber= number;
     }
+    public Agent GetTargetAgent()
+    {
+        return targetAgent;
+    }
+
 }

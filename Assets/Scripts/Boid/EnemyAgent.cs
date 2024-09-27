@@ -15,10 +15,10 @@ public class EnemyAgent : Agent
     }
     private void Update()
     {
-        if (!HasToUseObstacleAvoidance())
+        /*if (!HasToUseObstacleAvoidance())
         {
-            AddForce(Pursuit(GameManager.Instance.agents));
+            AddForce(Pursuit());
         }
-        Move();
+        Move();*/
     }
 }

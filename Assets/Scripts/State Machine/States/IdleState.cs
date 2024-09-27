@@ -5,7 +5,7 @@ using UnityEngine;
 public class IdleState : State
 {
 
-    public override void OnEnter(Vector3 target)
+    public override void OnEnter()
     {
     }
 
@@ -16,13 +16,11 @@ public class IdleState : State
 
     public override void OnUpdate()
     {
-        if (player.GetStamina() < 100)
-        {
-            player.AddStamina( 1 * Time.deltaTime);
-        }
-        else
-        {
-            fsm.ChangeState(PlayerState.Patrol, player.GetWayPoints()[0].transform.position);
+
+        player.AddStamina( 1 * Time.deltaTime);
+        if(player.GetStamina() > 100) 
+        { 
+            fsm.ChangeState(PlayerState.Patrol);
         }
     }
 

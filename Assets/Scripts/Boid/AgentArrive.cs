@@ -12,7 +12,7 @@ public class AgentArrive : Agent
         {
             if(Vector3.Distance(enemy.transform.position, transform.position) < viewRadius )
             {
-                AddForce(Flee(GameManager.Instance.enemyAgent));
+                AddForce(Flee(GameManager.Instance.playerAgent));
 
             }
             else

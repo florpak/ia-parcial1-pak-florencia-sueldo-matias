@@ -7,14 +7,20 @@ public class FoodScript : MonoBehaviour
     [SerializeField] GameObject targetBoid;
     [SerializeField] float minDist;
 
+    private void Start()
+    {
+        GameManager.Instance.food.Add(this);
+    }
     void Update()
     {
-        Transform target = targetBoid.transform;
-        float distance = Vector3.Distance(transform.position, target.position);
-
-        if (distance <= minDist)
+        foreach (Boid item in GameManager.Instance.agents)
         {
+            if (Vector3.Distance(transform.position, item.transform.position) > minDist) continue;
             Destroy(this.gameObject);
         }
+    }
+    private void OnDestroy()
+    {
+        GameManager.Instance.food.Remove(this);
     }
 }

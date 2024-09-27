@@ -34,18 +34,14 @@ public class FiniteStateMachine
         _currentState.OnUpdate();
     }
 
-    public void ChangeState(PlayerState state, Vector3 target)
+    public void ChangeState(PlayerState state)
     {
         _currentState?.OnExit();
         if (!player.HasToUseObstacleAvoidance())
         {
-            if (allStates.ContainsKey(PlayerState.Patrol)) _currentState = allStates[PlayerState.Patrol];
-        }
-        else
-        {
             if (allStates.ContainsKey(state)) _currentState = allStates[state];
         }
-        _currentState?.OnEnter(target);
+        _currentState?.OnEnter();
     }
 }
 

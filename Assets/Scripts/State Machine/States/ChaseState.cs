@@ -2,17 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChaseState : MonoBehaviour
+public class ChaseState : State
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void OnEnter()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnExit()
     {
-        
+    }
+
+    public override void OnUpdate()
+    {
+        player.SubstractStamina(1 * Time.deltaTime);
+        if (player.GetStamina() <= 0)
+        {
+            fsm.ChangeState(PlayerState.Idle);
+        }
+        if(player.GetTargetAgent() != null)
+        {
+            AddForce(player.Pursuit(player.GetTargetAgent())*3);
+            player.Move();
+        }
+        else
+        {
+            fsm.ChangeState(PlayerState.Patrol);
+        }
+
     }
 }

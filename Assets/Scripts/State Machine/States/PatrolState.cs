@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PatrolState : State
 {
-    public override void OnEnter(Vector3 target)
+    public override void OnEnter()
     {
         //throw new System.NotImplementedException();
     }
@@ -16,6 +16,15 @@ public class PatrolState : State
 
     public override void OnUpdate()
     {
+        player.SubstractStamina(1 * Time.deltaTime);
+        if (player.GetStamina() <= 0)
+        {
+            fsm.ChangeState(PlayerState.Idle);
+        }
+        if (player.GetTargetAgent() != null)
+        {
+            fsm.ChangeState(PlayerState.Chase);
+        }
         if (Vector3.Distance(player.GetWayPoints()[player.GetWayPointNumber()].transform.position, player.transform.position)>0.1f)
         {
             AddForce(Seek(player.GetWayPoints()[player.GetWayPointNumber()].transform.position, player.GetMaxSpeed()));
@@ -32,5 +41,10 @@ public class PatrolState : State
                 player.SetWayPointNumber(0);
             }
         }
+        
+
+        
+
+        
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class State
 {   
-    public abstract void OnEnter(Vector3 target);
+    public abstract void OnEnter();
     public abstract void OnUpdate();
     public abstract void OnExit();
     public FiniteStateMachine fsm;
@@ -19,7 +19,7 @@ public abstract class State
         {
             return Seek(desired.normalized, player.GetMaxSpeed());
         }
-        else if( dist> 0.1f)
+        else if( dist> 0.01f)
         {
             return Seek(desired.normalized, player.GetMaxSpeed() * (dist / player.GetViewRadius()));
         }
@@ -46,4 +46,9 @@ public abstract class State
     {
         player.SetVelocity(Vector3.ClampMagnitude(force + player.GetVelocity(), player.GetMaxSpeed()));
     }
+    public void AddChaseForce(Vector3 force,float velocity)
+    {
+        player.SetVelocity(Vector3.ClampMagnitude(force + player.GetVelocity(), player.GetMaxSpeed()));
+    }
+
 }

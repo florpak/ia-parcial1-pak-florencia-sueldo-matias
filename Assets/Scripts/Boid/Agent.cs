@@ -64,13 +64,14 @@ public class Agent : MonoBehaviour
         return steering;
 
     }
-    public void Move()
+    public virtual void Move()
     {
 
         transform.position += velocity * Time.deltaTime;
         transform.forward = velocity;
         UpdateBoundPosition();
     }
+
 
     public bool HasToUseObstacleAvoidance()
     {
@@ -94,11 +95,11 @@ public class Agent : MonoBehaviour
         float dist = Vector3.Distance(transform.position, desired);
         if(dist < viewRadius)
         {
-            return Seek(desired, _maxSpeed);
+            return Seek(desired, _maxSpeed * (dist / viewRadius));
         }
         else
         {
-            return Seek(desired, _maxSpeed * (dist / viewRadius));
+            return Seek(desired, _maxSpeed);
         }
     }
     public Vector3 Alignment(List<Agent> agents)
@@ -121,20 +122,12 @@ public class Agent : MonoBehaviour
         return Vector3.ClampMagnitude(desired-velocity, _maxForce * Time.deltaTime);
     } 
 
-    public Vector3 Pursuit(List<Agent> agents)
+    public Vector3 Pursuit(Agent agent)
     {
         Vector3 desired = Vector3.zero;
-        int boidCount = 0;
+         desired += agent.transform.position + agent.velocity;
 
-        foreach (Agent item in agents)
-        {
-            if (Vector3.Distance(transform.position, item.transform.position) > viewRadius) continue;
-            desired += item.transform.position + item.velocity;
-            boidCount++;
-        }
-
-        Vector3 futurePosition = desired / boidCount;
-        return Seek(futurePosition * _maxSpeed);
+        return Seek( desired* _maxSpeed);
     }
     public Vector3 Evade(List<Player> agents)
     {
@@ -151,12 +144,12 @@ public class Agent : MonoBehaviour
         return -Seek(desired / enemyCount, _maxSpeed);
     }
 
-    public Vector3 Flee(List<EnemyAgent>agents)
+    public Vector3 Flee(List<Player>agents)
     {
         Vector3 desired = Vector3.zero;
         int enemyCount = 0;
 
-        foreach (EnemyAgent item in agents)
+        foreach (Player item in agents)
         {
             if (Vector3.Distance(transform.position, item.transform.position) > viewRadius) continue;
             enemyCount++;
@@ -244,7 +237,7 @@ public class Agent : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, viewRadius);
     }
 
-    private void UpdateBoundPosition()
+    public void UpdateBoundPosition()
     {
         transform.position = GameManager.Instance.AdjustPositionsToBounds(transform.position);
     }

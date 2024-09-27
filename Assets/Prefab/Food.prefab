@@ -96,6 +96,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587071ff74913fc44a92cb680b64aa51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetBoid: {fileID: 2685725429217530715, guid: 92177f844b458644e81965f20ad72e37,
-    type: 3}
-  minDist: 2
+  targetBoid: {fileID: 0}
+  minDist: 0.5
